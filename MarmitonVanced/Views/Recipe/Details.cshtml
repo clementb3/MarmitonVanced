@@ -1,0 +1,35 @@
+﻿@using Models
+@model Recipe
+
+<body class="text-center">
+    <h1>@Model.Name</h1>
+    <div class="detail">
+        <img src="@Model.Image" alt="Recette" />
+        <div>
+            <p>Créer par : @Model.Creator.Name  @Model.Creator.Surname.ToUpper()</p>
+            <p>Durée : @Model.Time</p>
+            <p>@Model.Description</p>
+        </div>
+    </div>
+    <div class="recipe">
+        <div>
+            @foreach (Ingredient ingredient in Model.Ingredients)
+            {
+                <div>
+                    <div>
+                        <img src="@ingredient.Image" alt="Ingredient" />
+                    </div>
+                    <p>@ingredient.Name</p>
+                </div>
+            }
+        </div>
+        <div>
+            @foreach (Step step in Model.Steps)
+            {
+                <p>
+                    Étape @step.Pos : @step.Desc
+                </p>
+            }
+        </div>
+    </div>
+</body>

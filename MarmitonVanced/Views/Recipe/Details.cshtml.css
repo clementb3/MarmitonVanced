@@ -1,0 +1,58 @@
+﻿body {
+    padding-top: 20px;
+}
+
+.detail {
+    display:flex
+}
+
+    .detail img {
+        width: 150px;
+        margin: 0 25px 0 12%
+    }
+
+    .detail div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .recipe {
+        margin-top:30px;
+        display:flex
+    }
+
+        .recipe >div:first-of-type {
+        width:30%
+    }
+
+        .recipe > div:first-of-type > div {
+            display: flex;
+            align-items: center;
+            height: 50px;
+        }
+
+            .recipe > div:first-of-type > div > div {
+                width: 60px;
+                display: flex;
+                justify-content: center
+            }
+
+        .recipe > div {
+            width: 70%;
+            text-align: start;
+            border: 1px solid #c0a456;
+            border-radius: 14px;
+            margin: 20px;
+            height: fit-content;
+            padding: 10px
+        }
+
+        .recipe img {
+            height: 35px;
+        }
+
+        p{
+            margin:inherit
+        }

@@ -22,4 +22,11 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+app.UseEndpoints(endpoints =>
+{
+    _ = endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Recipe}/{action=Index}");
+});
+
 app.Run();

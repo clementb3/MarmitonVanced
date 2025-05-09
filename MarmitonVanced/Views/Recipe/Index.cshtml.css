@@ -1,0 +1,50 @@
+body{
+    padding-top:20px;
+}
+
+button {
+    border: 1px solid #6c757d;
+    border-radius: 14px;
+    width : 20%;
+}
+
+.selectType {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.recipe {
+    border: 1px solid #c0a456;
+    border-radius: 14px;
+    margin: 10px;
+    display: flex;
+    padding: 5px;
+    width: 100%;
+    align-items: center;
+}
+
+.list img {
+    border-radius: 14px;
+    margin-right: 10px;
+    width: 7%;
+}
+
+.recipe > div {
+    display: flex;
+    flex-direction: column;
+    width: 93%;
+    padding: 10px;
+}
+
+    .recipe > div > div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+.list p {
+    text-align: start;
+}
+
+.list {
+    display: flex;
+}

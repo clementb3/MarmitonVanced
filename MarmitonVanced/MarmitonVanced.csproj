@@ -6,4 +6,23 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Views\Recipe\Details.cshtml.css" />
+    <None Remove="Views\Recipe\Index - Copier.cshtml.css" />
+    <None Remove="Views\Recipe\Index.cshtml.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Recipe\Details.cshtml.css" />
+    <Content Include="Views\Recipe\Index.cshtml.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\NewFolder\" />
+  </ItemGroup>
+
 </Project>
