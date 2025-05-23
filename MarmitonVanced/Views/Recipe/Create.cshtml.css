@@ -1,0 +1,96 @@
+﻿main > div {
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start
+}
+
+.detail {
+    display: flex;
+    border: 1px solid #c0a456;
+    border-radius: 14px;
+    width: 30%;
+    flex-direction: column
+}
+
+    .detail > div:first-of-type {
+        border-bottom: 1px solid #c0a456;
+        margin: 10px 0;
+        padding: 10px 0;
+    }
+
+    .detail img {
+        width: 150px;
+        margin: 0 25px 0 12%
+    }
+
+    .detail div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+.recipe {
+    display: flex;
+    width: 69%;
+    text-align: start;
+    border: 1px solid #c0a456;
+    border-radius: 14px;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .recipe > div button {
+        width: 2%;
+    }
+
+    .recipe > div {
+        display: flex;
+        width: 98%;
+        justify-content: center;
+        margin: 5px 0
+    }
+
+p {
+    margin: inherit
+}
+
+.listIngredient > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.listIngredient > div > select {
+    width:60%;
+}
+
+.listIngredient > div > div {
+    width:39%;
+    flex-direction:row
+}
+
+    .listIngredient > div > div > input {
+        width: 80%;
+    }
+
+    .listIngredient > div > div > p {
+        width: 19%;
+    }
+
+#baseStep{
+    visibility:hidden
+}
+
+.listIngredient > div button {
+    width: 35px;
+}
+
+#svgRecipe {
+    width: 100px;
+}
+
+textarea {
+    width:97%;
+}

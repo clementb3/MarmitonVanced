@@ -1,0 +1,92 @@
+﻿@using Models
+@using System.Text.Json;
+@model List<Object>
+
+<body class="text-center">
+    <select id="recipeSelect" onchange="changeRecipe()">
+        @foreach (Recipe recipe in (List<Recipe>)Model[0])
+        {
+            <option value="@recipe.Id">@recipe.Name</option>
+        }
+    </select>
+    <input onchange="updateRecipe()" id="recipeName" type="text" value="" placeholder="Nom de la recette" />
+    <input onchange="updateRecipe()" id="recipeTime" type="time" value="" placeholder="Temps de préparation" />
+    <input onchange="updateRecipe()" id="recipeCount" type="number" value="" placeholder="Nombre de personnes" />
+    <select id="recipeType" onchange="updateRecipe()">
+        @foreach (RecipeType recipeType in Enum.GetValues(typeof(RecipeType)).Cast<RecipeType>().ToList()[..3])
+        {
+            <option value="@((int) recipeType)">@((RecipeType)recipeType)</option>
+        }
+    </select>
+    <div>
+        <input onclick="sendData()" type="button" value="Valider" />
+        <input onclick="removeRecipe()" type="button" value="Supprimer" />
+        <input onclick="location.href='/recipe'" type="button" value="Annuler" />
+    </div>
+    <div>
+        <div class="detail">
+            <div>
+                <img id="imgRecipe" class="hide" src="" alt="Recette" />
+                <svg id="svgRecipe" viewBox="0 0 48 48" id="a" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <defs>
+                            <style>
+                                .b {
+                                    fill: none;
+                                    stroke: #ffffff;
+                                    stroke-linecap: round;
+                                    stroke-linejoin: round;
+                                }</style>
+                        </defs> <g> <path class="b" d="M24,24.4682H5.5c0,9.2155,11.597,17.1393,11.597,17.1393h6.903"></path> <path class="b" d="M10.8843,26.5736c0,6.7924,7.6278,11.8041,7.6278,11.8041"></path> <path class="b" d="M24,24.4682h18.5c0,9.2155-11.597,17.1393-11.597,17.1393h-6.903"></path> <path class="b" d="M14.0942,24.4682c-1.3461-5.0392,7.6541-8.5034,15.7305-9.5733l.7892-1.4542,3.184,3.87-1.7473,.2847c-.8542,2.8087-5.1347,6.8728-5.1347,6.8728"></path> <path class="b" d="M15.5093,24.4682c.2883-2.5946,3.2968-5.5138,14.7724-9.0189"></path> <path class="b" d="M30.5784,15.8092c-4.3403,2.1744-9.4,4.6725-12.9464,8.659"></path> <path class="b" d="M31.4253,16.8367c-4.5094,6.1259-7.4253,7.6315-7.4253,7.6315"></path> <path class="b" d="M21.5047,24.4682c2.7196-1.5897,9.4897-8.1542,9.4897-8.1542"></path> <path class="b" d="M33.0768,16.4532l8.1513-6.6057c.5628-.4561,.6493-1.282,.1932-1.8447h0c-.4561-.5628-1.282-.6493-1.8447-.1932l-8.1513,6.6057"></path> </g> <line class="b" x1="29.8248" y1="14.8949" x2="32.0506" y2="17.5954"></line>
+                    </g>
+                </svg>
+                <input onchange="updateRecipe()" id="fileRecipe" type="file" placeholder="Fichier image" onchange="" />
+            </div>
+            <div class="listIngredient">
+                <div class="ingredient">
+                    <select onchange="changeUnite(event);updateRecipe()">
+                        @foreach (Ingredient ingredient in (List<Ingredient>)Model[1])
+                        {
+                            <option value="@ingredient.Id" unity="@ingredient.Type">@ingredient.Name</option>
+                        }
+                    </select>
+                    <div><input onchange="updateRecipe()" type="number" placeholder="Qte" value="" /><p class="unity">@(((List<Ingredient>)(Model[1]))[0].Type)</p></div>
+                    <button onclick="removeIngredient(event);updateRecipe()"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12L14 16M14 12L10 16M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
+
+                </div>
+                <button onchange="updateRecipe()" onclick="addIngredient()"> + </button>
+
+            </div>
+        </div>
+        <div class="recipe">
+            <div>
+                <textarea onchange="updateRecipe()"></textarea>
+                <button onclick="removeStep(event);updateRecipe()"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12L14 16M14 12L10 16M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
+            </div>
+            <button onclick="addStep();updateRecipe()"> + </button>
+
+        </div>
+    </div>
+</body>
+<script src="~/js/RecipeCreate.js "></script>
+<script>
+    let data = @Html.Raw(JsonSerializer.Serialize(Model[0]))
+</script>
+<div class="ingredient" id="baseIngredient">
+    <select onchange="changeUnite(event);updateRecipe()">
+        @foreach (Ingredient ingredient in (List<Ingredient>)Model[1])
+        {
+            <option value="@ingredient.Id" unity="@ingredient.Type">@ingredient.Name</option>
+        }
+    </select>
+    <div><input onchange="updateRecipe()" type="number" placeholder="Qte" value="" /><p class="unity">@(((List<Ingredient>)(Model[1]))[0].Type)</p></div>
+    <button onclick="removeIngredient(event);updateRecipe()"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12L14 16M14 12L10 16M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
+
+</div>
+
+<div id="baseStep">
+    <textarea onchange="updateRecipe()"></textarea>
+    <button onclick="removeStep(event);updateRecipe()"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 12L14 16M14 12L10 16M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg></button>
+</div>

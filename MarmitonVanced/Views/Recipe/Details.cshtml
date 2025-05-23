@@ -8,7 +8,7 @@
         <div>
             <p>Créer par : @Model.Creator.Name  @Model.Creator.Surname.ToUpper()</p>
             <p>Durée : @Model.Time</p>
-            <p>@Model.Description</p>
+            <p>@Model.CountRecipe</p>
         </div>
     </div>
     <div class="recipe">
@@ -16,9 +16,6 @@
             @foreach (Ingredient ingredient in Model.Ingredients)
             {
                 <div>
-                    <div>
-                        <img src="@ingredient.Image" alt="Ingredient" />
-                    </div>
                     <p>@ingredient.Name</p>
                 </div>
             }

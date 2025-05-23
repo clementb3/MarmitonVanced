@@ -1,7 +1,11 @@
+using MarmitonVanced.Abstract;
+using MarmitonVanced.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<IIaService,IaService>();
 
 var app = builder.Build();
 

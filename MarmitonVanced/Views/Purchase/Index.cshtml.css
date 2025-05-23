@@ -1,0 +1,27 @@
+﻿.list {
+    display: flex;
+    align-items: center;
+    flex-direction: column
+}
+
+.ingredient {
+    border: 1px solid #c0a456;
+    border-radius: 14px;
+    margin: 10px;
+    display: flex;
+    padding: 5px;
+    width: 98%;
+    justify-content: space-between;
+    font-size: xx-large;
+    padding: 10px 30px;
+    
+}
+
+.validated {
+    border-color: #c0a45630;
+}
+
+.validated p {
+    text-decoration: line-through;
+    color: #FFFFFF30
+}

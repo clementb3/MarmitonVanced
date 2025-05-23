@@ -1,0 +1,29 @@
+﻿p, a, li {
+    text-align: left;
+}
+
+.prompt {
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+}
+
+    .prompt > div {
+        border: solid 1px #6c757d;
+        border-radius: 5px;
+        width:98%;
+        margin:10px;
+        padding:10px;
+    }
+
+    .prompt input {
+        width:95%;
+    }
+
+    .prompt button {
+        width: 4%;
+        border: solid 1px #6c757d;
+        border-radius: 5px;
+    }

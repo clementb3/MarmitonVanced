@@ -1,0 +1,99 @@
+﻿body {
+}
+
+table{
+    width:98%;
+}
+
+td {
+    border: solid 1px #6c757d;
+    width:13.5%;
+    height:45px;
+}
+
+tr > td:first-of-type {
+    width:5.5%;
+}
+
+.schedule{
+    display:flex;
+    align-content:center;
+    justify-content:center 
+}
+
+.add {
+    visibility: hidden;
+    border: solid 1px #c0a456;
+    border-radius: 5px;
+    height: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center
+}
+
+.addSelect {
+    visibility: visible;
+    background: #c0a45620;
+}
+
+td:hover > .add {
+    visibility: visible;
+}
+
+    .add p {
+        margin: auto;
+        color: #c0a456;
+        background:transparent;
+    }
+
+    .td p {
+        margin: auto;
+        color: #c0a456;
+        background:transparent;
+    }
+
+.new {
+    visibility:hidden;
+    position: fixed;
+    right: 10px;
+    bottom: 20px;
+    height: 80%;
+    width: 20%;
+    border: solid 1px #6c757d;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    overflow:hidden;
+}
+
+.new > div{
+    height:30%;
+}
+
+.new > div:first-of-type{
+    height:15%;
+}
+
+.alignRight{
+    display:flex;
+    justify-content:end
+}
+
+.new select{
+    width:90%;
+}
+
+.recipes > div > button {
+    width: 35px;    
+}
+
+.recipes > button {
+    width: 95%;
+    border: solid 1px #6c757d;
+    border-radius: 5px;
+}
+
+.recipes{
+    overflow:auto
+}

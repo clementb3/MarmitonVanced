@@ -11,24 +11,84 @@
 <body>
     <header>
         <div class="menu">
-            <svg style="height: 36px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M1 12C1 11.4477 1.44772 11 2 11H22C22.5523 11 23 11.4477 23 12C23 12.5523 22.5523 13 22 13H2C1.44772 13 1 12.5523 1 12Z" fill="#ffffff"></path> <path d="M1 4C1 3.44772 1.44772 3 2 3H22C22.5523 3 23 3.44772 23 4C23 4.55228 22.5523 5 22 5H2C1.44772 5 1 4.55228 1 4Z" fill="#ffffff"></path> <path d="M1 20C1 19.4477 1.44772 19 2 19H22C22.5523 19 23 19.4477 23 20C23 20.5523 22.5523 21 22 21H2C1.44772 21 1 20.5523 1 20Z" fill="#ffffff"></path> </g></svg>
-            <button>Marmiton Vanced</button>
+            <svg onclick="showMenuNav()" style="height: 36px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M1 12C1 11.4477 1.44772 11 2 11H22C22.5523 11 23 11.4477 23 12C23 12.5523 22.5523 13 22 13H2C1.44772 13 1 12.5523 1 12Z" fill="#ffffff"></path> <path d="M1 4C1 3.44772 1.44772 3 2 3H22C22.5523 3 23 3.44772 23 4C23 4.55228 22.5523 5 22 5H2C1.44772 5 1 4.55228 1 4Z" fill="#ffffff"></path> <path d="M1 20C1 19.4477 1.44772 19 2 19H22C22.5523 19 23 19.4477 23 20C23 20.5523 22.5523 21 22 21H2C1.44772 21 1 20.5523 1 20Z" fill="#ffffff"></path> </g></svg>
+            <button onclick="location.href='/'">Marmiton Vanced</button>
         </div>
         <div class="search">
-            <input type="text" placeholder="search" />
-
+            <input onkeypress="if(event.keyCode === 13){location.href='/recipe/search?search='+document.getElementById('search').value}" id="search" type="text" placeholder="Recherche de recette"/>
+        </div>
+        <div class="account">
+            <button onclick="clickAccount()">
+                <svg viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <defs>
+                            <style>
+                                .cls-1 {
+                                    fill: none;
+                                    stroke: #ffffff;
+                                    stroke-miterlimit: 10;
+                                    stroke-width: 1.91px;
+                                }</style>
+                        </defs><circle class="cls-1" cx="12" cy="7.25" r="5.73"></circle><path class="cls-1" d="M1.5,23.48l.37-2.05A10.3,10.3,0,0,1,12,13h0a10.3,10.3,0,0,1,10.13,8.45l.37,2.05"></path>
+                    </g>
+                </svg>
+            </button>
         </div>
     </header>
-    <div>
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="content">
+        <div class="navMenu">
+            <button onclick="location.href='/recipe'">Recettes</button>
+            <button onclick="location.href='/schedule'">Planning</button>
+            <button onclick="location.href='/stock'">Stock</button>
+            <button onclick="location.href='/purchase'">Course</button>
+            <button onclick="location.href='/ia'">IA</button>
+        </div>
+        <div>
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
-
+    <div id="login" class="login">
+        <div>
+            <input type="text" placeholder="E-mail" />
+            <input type="password" placeholder="Password" />
+            <div>
+                <input onclick='document.getElementById("login").style.visibility = "hidden"' type="button" value="Annuler" />
+                <input onclick="connectAccount()" type="submit" value="Valider" />
+                <input onclick="createAccountShow()" type="button" value="Créer un nouveau compte" />
+            </div>
+        </div>
+    </div>
+    <div id="logout" class="logout">
+        <div>
+            <p></p>
+            <div>
+                <input onclick='document.getElementById("logout").style.visibility = "hidden"' type="button" value="Annuler" />
+                <input onclick='document.cookie="token=0"; document.getElementById("logout").style.visibility="hidden"' type="submit" value="Déconnection" />
+            </div>
+        </div>
+    </div>
+    <div id="createAccount" class="createAccount">
+        <div>
+            <input type="text" placeholder="Nom" />
+            <input type="text" placeholder="Prénom" />
+            <input type="text" placeholder="E-mail" />
+            <input type="password" placeholder="mot de passe" />
+            <input type="password" placeholder="Confirmer le mot de passe" />
+            <div>
+                <input onclick='document.getElementById("createAccount").style.visibility = "hidden"' type="button" value="Annuler" />
+                <input onclick="createAccount()" type="submit" value="Valider" />
+            </div>
+        </div>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/Account.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

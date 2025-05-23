@@ -1,0 +1,15 @@
+﻿@using Models
+@model List<Stock>
+<body class="text-center">
+    <h1 class="display-4">Liste des recettes</h1>
+    <div class="list">
+        @foreach(Stock stock in Model)
+        {
+            <button onclick="validated(event)" class="ingredient">
+                <p>@stock.IngredientStock.Name</p>
+                <p>@stock.Quantity @stock.IngredientStock.Type</p>
+            </button>
+        }
+    </div>
+</body>
+<script src="~/js/Purchase.js"></script>
