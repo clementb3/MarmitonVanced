@@ -14,12 +14,10 @@ function showMenuNav() {
     if (nav) {
         nav = false
         document.querySelector(".navMenu").style.width = '200px';
-        document.querySelector(".content div:nth-of-type(2)").style.marginLeft = '200px';
     }
     else {
         nav = true
         document.querySelector(".navMenu").style.width = '0';
-        document.querySelector(".content div:nth-of-type(2)").style.marginLeft = '0';
 
     }
 }

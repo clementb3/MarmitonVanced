@@ -2,23 +2,29 @@
 }
 
 table{
-    width:98%;
+    width:auto;
 }
 
 td {
     border: solid 1px #6c757d;
-    width:13.5%;
+    width:180px;
     height:45px;
 }
 
+
+
 tr > td:first-of-type {
-    width:5.5%;
+    width:25px;
+    position:fixed;
+    left:5px;
 }
 
-.schedule{
-    display:flex;
-    align-content:center;
-    justify-content:center 
+.schedule {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    overflow: auto;
 }
 
 .add {
@@ -97,3 +103,4 @@ td:hover > .add {
 .recipes{
     overflow:auto
 }
+

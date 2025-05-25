@@ -11,6 +11,7 @@ namespace MarmitonVanced.Controllers
     {
         public IActionResult Index()
         {
+            int id = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
             List<object> res = [];
             List<Stock> stocks = [];
             List<Ingredient> ingredients = [];
@@ -29,7 +30,7 @@ namespace MarmitonVanced.Controllers
             }
             res.Add(ingredients);
             dr.Close();
-            sqlCommand = new($"SELECT [id],[idIngredient],[qte] FROM [MarmitonVanced].[dbo].[Stock]", sqlConnection);
+            sqlCommand = new($"SELECT [id],[idIngredient],[qte] FROM [MarmitonVanced].[dbo].[Stock] where [idUser] = {id}", sqlConnection);
             dr = sqlCommand.ExecuteReader();
             while (dr.Read())
             {

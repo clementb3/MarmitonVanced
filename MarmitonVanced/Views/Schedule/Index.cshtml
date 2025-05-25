@@ -9,7 +9,7 @@
                     <tr>
                         <th></th>
 
-                        @for (int day = 0; day < 7; day++)
+                        @for (int day = 0; day < 30; day++)
                         {
                             <th>@DateTime.Now.AddDays(day).Day (@DateTime.Now.AddDays(day).DayOfWeek)</th>
                         }
@@ -21,7 +21,7 @@
                     {
                         <tr>
                             <td>@hour</td>
-                            @for (int day = 0; day < 7; day++)
+                            @for (int day = 0; day < 30; day++)
                             {
                                 <td id="@(DateOnly.FromDateTime(DateTime.Now.AddDays(day)))h@(hour)" onclick='addSchedule("@DateTime.Now.AddDays(day).Date",@hour, event)'><div class="add"><p>+</p></div></td>
                             }

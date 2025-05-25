@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 html {
   font-size: 14px;
 }
@@ -85,4 +87,8 @@ main *{
     visibility:hidden;
     width:0;
     height:0;
+}
+
+.price::after {
+    content: "\20AC"
 }
