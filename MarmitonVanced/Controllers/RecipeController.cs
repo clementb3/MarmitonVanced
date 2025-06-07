@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Hosting;
 
 namespace MarmitonVanced.Controllers
 {
@@ -14,25 +15,62 @@ namespace MarmitonVanced.Controllers
             List<Recipe> recipes = [];
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
             sqlConnection.Open();
-            SqlCommand sqlCommand = new($"SELECT r.[id],r.[name],[time],[image],[type],[count],u.name,u.surname FROM [MarmitonVanced].[dbo].[Recipe] as r join [MarmitonVanced].[dbo].[User] as u on r.idUser = u.id", sqlConnection);
-            SqlDataReader dr = sqlCommand.ExecuteReader();
-            while (dr.Read())
+            int? id = null;
+            try
             {
-                recipes.Add(new()
+                id = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
+                            }
+            catch { }
+            SqlDataReader dr;
+            if (id == null)
+            {
+                SqlCommand sqlCommand = new($"SELECT r.[id],r.[name],[time],[image],[type],[count],u.name,u.surname FROM [MarmitonVanced].[dbo].[Recipe] as r join [MarmitonVanced].[dbo].[User] as u on r.idUser = u.id", sqlConnection);
+                dr = sqlCommand.ExecuteReader();
+                while (dr.Read())
                 {
-                    Id = dr.GetInt32(0),
-                    Name = dr.GetString(1),
-                    Time = dr.GetTimeSpan(2),
-                    Image = "/images/" + dr.GetString(3),
-                    Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
-                    CountRecipe = dr.GetInt32(5),
-                    Creator = new()
+                    recipes.Add(new()
                     {
-                        Name = dr.GetString(6),
-                        Surname = dr.GetString(7),
-                    }
-                });
+                        Id = dr.GetInt32(0),
+                        Name = dr.GetString(1),
+                        Time = dr.GetTimeSpan(2),
+                        Image = "/images/" + dr.GetString(3),
+                        Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
+                        CountRecipe = dr.GetInt32(5),
+                    });
+                }
             }
+            else
+            {
+                SqlCommand sqlCommand = new($"SELECT r.[id],r.[name],[time],[image],[type],[count],sum(CONVERT(decimal(10,5), iu.qte)/a.quantity*a.price), " +
+    $"(select count(*) FROM [MarmitonVanced].[dbo].[Recipe] as r2 join IngredientUsed as iu on iu.idRecipe=r2.id left join (select * from Article where idUser={id}) as a on a.idIngredient = iu.idIngredient where r2.[id]=r.id and a.price is null)" +
+    $"FROM [MarmitonVanced].[dbo].[Recipe] as r join IngredientUsed as iu on iu.idRecipe=r.id left join (select * from Article where idUser={id}) as a on a.idIngredient = iu.idIngredient group by r.[id],r.[name],[time],[image],[type],[count]", sqlConnection);
+                dr = sqlCommand.ExecuteReader();
+                while (dr.Read())
+                {
+                    recipes.Add(new()
+                    {
+                        Id = dr.GetInt32(0),
+                        Name = dr.GetString(1),
+                        Time = dr.GetTimeSpan(2),
+                        Image = "/images/" + dr.GetString(3),
+                        Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
+                        CountRecipe = dr.GetInt32(5),
+                    });
+                    if (!dr.IsDBNull(6))
+                    {
+                        recipes.Last().Cost = Math.Round(dr.GetDecimal(6), 2).ToString();
+                    }
+                    else
+                    {
+                        recipes.Last().Cost = "0";
+                    }
+                    if (dr.GetInt32(7) != 0)
+                    {
+                        recipes.Last().Cost += "+?";
+                    }
+                }
+            }
+                
             dr.Close();
             sqlConnection.Close();
             return View(recipes);
@@ -67,11 +105,6 @@ namespace MarmitonVanced.Controllers
                     Image = "/images/" + dr.GetString(3),
                     Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                     CountRecipe = dr.GetInt32(5),
-                    Creator = new()
-                    {
-                        Name = dr.GetString(6),
-                        Surname = dr.GetString(7),
-                    }
                 });
             }
             dr.Close();
@@ -109,7 +142,7 @@ namespace MarmitonVanced.Controllers
                         Pos = dr.GetInt32(2),
                     });
                 }
-                recipe.Steps = recipe.Steps.OrderBy(recipeTemp => recipeTemp.Pos).ToList();
+                recipe.Steps = [.. recipe.Steps.OrderBy(recipeTemp => recipeTemp.Pos)];
                 dr.Close();
             }
             res.Add(recipes);
@@ -135,11 +168,6 @@ namespace MarmitonVanced.Controllers
                     Image = "/images/" + dr.GetString(3),
                     Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                     CountRecipe = dr.GetInt32(5),
-                    Creator = new()
-                    {
-                        Name = dr.GetString(6),
-                        Surname = dr.GetString(7),
-                    }
                 });
             }
             dr.Close();
@@ -151,23 +179,66 @@ namespace MarmitonVanced.Controllers
         {
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
             sqlConnection.Open();
-            SqlCommand sqlCommand = new($"SELECT r.[id],r.[name],[time],[image],[type],[count],u.name,u.surname FROM [MarmitonVanced].[dbo].[Recipe] as r join [MarmitonVanced].[dbo].[User] as u on r.idUser = u.id where r.id = {id}\r\n", sqlConnection);
-            SqlDataReader dr = sqlCommand.ExecuteReader();
-            dr.Read();
-            Recipe recipe = new()
+            Recipe recipe = new Recipe();
+            int? idUser = null;
+            try
             {
-                Id = dr.GetInt32(0),
-                Name = dr.GetString(1),
-                Time = dr.GetTimeSpan(2),
-                Image = "/images/" + dr.GetString(3),
-                Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
-                CountRecipe = dr.GetInt32(5),
-                Creator = new()
+                idUser = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
+            }
+            catch { }
+            SqlCommand sqlCommand;
+            SqlDataReader dr;
+            if (idUser == null)
+            {
+                sqlCommand = new($"SELECT r.[id],r.[name],[time],[image],[type],[count],u.name,u.surname FROM [MarmitonVanced].[dbo].[Recipe] as r join [MarmitonVanced].[dbo].[User] as u on r.idUser = u.id where r.id={id}", sqlConnection);
+                dr = sqlCommand.ExecuteReader();
+                while (dr.Read())
                 {
-                    Name = dr.GetString(6),
-                    Surname = dr.GetString(7),
+                    recipe = new()
+                    {
+                        Id = dr.GetInt32(0),
+                        Name = dr.GetString(1),
+                        Time = dr.GetTimeSpan(2),
+                        Image = "/images/" + dr.GetString(3),
+                        Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
+                        CountRecipe = dr.GetInt32(5),
+                    };
+
                 }
-            };
+            }
+            else
+            {
+                sqlCommand = new($"SELECT r.[id],r.[name],[time],[image],[type],[count],sum(CONVERT(decimal(10,5), iu.qte)/a.quantity*a.price), " +
+    $"(select count(*) FROM [MarmitonVanced].[dbo].[Recipe] as r2 join IngredientUsed as iu on iu.idRecipe=r2.id left join (select * from Article where idUser={idUser}) as a on a.idIngredient = iu.idIngredient where r2.[id]=r.id and a.price is null)" +
+    $"FROM [MarmitonVanced].[dbo].[Recipe] as r join IngredientUsed as iu on iu.idRecipe=r.id left join (select * from Article where idUser={idUser}) as a on a.idIngredient = iu.idIngredient where r.id={id} group by r.[id],r.[name],[time],[image],[type],[count]", sqlConnection);
+                dr = sqlCommand.ExecuteReader();
+                while (dr.Read())
+                {
+                    recipe = new()
+                    {
+                        Id = dr.GetInt32(0),
+                        Name = dr.GetString(1),
+                        Time = dr.GetTimeSpan(2),
+                        Image = "/images/" + dr.GetString(3),
+                        Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
+                        CountRecipe = dr.GetInt32(5),
+                        Cost = Math.Round(dr.GetDecimal(6), 2).ToString(),
+                    };
+                    if (!dr.IsDBNull(6))
+                    {
+                        recipe.Cost = Math.Round(dr.GetDecimal(6), 2).ToString();
+                    }
+                    else
+                    {
+                        recipe.Cost = "0";
+                    }
+                    if (dr.GetInt32(7) != 0)
+                    {
+                        recipe.Cost += "+?";
+                    }
+                }
+            }
+
             dr.Close();
             sqlCommand = new($"SELECT i.id, i.name,[qte],i.[typeQte] FROM [MarmitonVanced].[dbo].[IngredientUsed] as iu join [MarmitonVanced].[dbo].[Ingredient] as i on i.id = [idIngredient] where idRecipe = {id}", sqlConnection);
             dr = sqlCommand.ExecuteReader();
@@ -184,7 +255,7 @@ namespace MarmitonVanced.Controllers
             }
             dr.Close();
 
-            sqlCommand = new($"SELECT [id],[desc],[pos] FROM [MarmitonVanced].[dbo].[Step] where idRecipe = {id}\r\n", sqlConnection);
+            sqlCommand = new($"SELECT [id],[desc],[pos] FROM [MarmitonVanced].[dbo].[Step] where idRecipe = {id}", sqlConnection);
             dr = sqlCommand.ExecuteReader();
             while (dr.Read())
             {
@@ -229,7 +300,7 @@ namespace MarmitonVanced.Controllers
                         sqlCommand.ExecuteNonQuery();
                     }
                     int maxpos = 0;
-                        foreach (JObject steps in recipe["Steps"])
+                        foreach (JObject steps in recipe["Steps"]!)
                     {
                         maxpos++;
                         sqlCommand = new($"SELECT COUNT(*) FROM [MarmitonVanced].[dbo].[Step] where idRecipe = {recipe["Id"]} and pos = {steps["Pos"]}", sqlConnection);
@@ -249,7 +320,7 @@ namespace MarmitonVanced.Controllers
                     sqlCommand = new($"delete FROM [MarmitonVanced].[dbo].[IngredientUsed] where [idRecipe] = {recipe["Id"]}", sqlConnection);
                     sqlCommand.ExecuteNonQuery();
 
-                    foreach (JObject ingredient in recipe["Ingredients"])
+                    foreach (JObject ingredient in recipe["Ingredients"]!)
                     {
                         sqlCommand = new($"INSERT INTO [dbo].[IngredientUsed]([idRecipe],[idIngredient],[qte]) VALUES ({recipe["Id"]},'{ingredient["Id"]}',{ingredient["Quantity"]})", sqlConnection);
                         sqlCommand.ExecuteNonQuery();
@@ -261,7 +332,7 @@ namespace MarmitonVanced.Controllers
             return "validate";
         }
 
-        public async Task<string> removeRecipe(int idRecipe)
+        public string removeRecipe(int idRecipe)
         {
             int id = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
 

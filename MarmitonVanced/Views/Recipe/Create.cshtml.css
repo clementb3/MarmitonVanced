@@ -1,20 +1,27 @@
-﻿main > div {
-    padding-top: 20px;
+﻿.main > div {
     display: flex;
     justify-content: space-around;
-    align-items: flex-start
+    align-items: flex-start;
+    width:98%
+}
+
+.main{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.main> *{
+    margin:5px 0;
 }
 
 .detail {
     display: flex;
-    border: 1px solid #c0a456;
-    border-radius: 14px;
     width: 30%;
     flex-direction: column
 }
 
     .detail > div:first-of-type {
-        border-bottom: 1px solid #c0a456;
         margin: 10px 0;
         padding: 10px 0;
     }
@@ -35,14 +42,12 @@
     display: flex;
     width: 69%;
     text-align: start;
-    border: 1px solid #c0a456;
-    border-radius: 14px;
     flex-direction: column;
     align-items: center;
 }
 
     .recipe > div button {
-        width: 2%;
+        width: 40px;
     }
 
     .recipe > div {
@@ -93,4 +98,48 @@ p {
 
 textarea {
     width:97%;
+    height:130px;
 }
+
+.controls{
+    position:fixed;
+    bottom:0;
+    width:100% !important;
+}
+
+.controls > input{
+    margin:10px;
+}
+
+#recipeSelect {
+    width: 98%;
+    margin-top:10px;
+}
+
+.recipeInfo  input, .recipeInfo  select {
+    margin: 10px;
+}
+
+
+@media (max-width:600px) {
+
+    .recipeInfo {
+        flex-direction: column !important;
+        align-items: center !important;
+
+    }
+        .recipeInfo input, .recipeInfo select {
+            margin: 5px 0;
+            width:98%
+        }
+    .details {
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .detail, .recipe {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+

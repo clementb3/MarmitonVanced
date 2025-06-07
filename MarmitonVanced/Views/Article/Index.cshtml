@@ -2,11 +2,11 @@
 @model List<Ingredient>
 
 <body class="text-center">
-    <h1 class="display-4">Liste des recettes</h1>
+    <h1 class="display-4">Liste des articles</h1>
     <div class="listIngredient">
         @foreach (Ingredient ingredient in Model)
         {
-            <div id="ingredient">
+            <div id="ingredient" class="frame2 ingredient">
                 <p>@ingredient.Name</p>
                 <div>
                     <input id="quantity" onchange="updatePriceIngredient(event,@ingredient.Id)" type="number" placeholder="Quantité" value="@ingredient.Quantity" /><p>@ingredient.Type</p>

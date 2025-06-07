@@ -27,7 +27,7 @@ function changeRecipe() {
     for (let recipe of data) {
         if (recipe.Id == document.getElementById("recipeSelect").value) {
             document.getElementById("recipeName").value = recipe.Name
-            document.getElementById("imgRecipe").value = recipe.Image
+            //document.getElementById("imgRecipe").value = recipe.Image
             document.getElementById("recipeTime").value = recipe.Time
             document.getElementById("recipeCount").value = recipe.CountRecipe
             document.getElementById("recipeType").value = recipe.Type
@@ -54,7 +54,7 @@ function updateRecipe() {
     for (let recipe of data) {
         if (recipe.Id == document.getElementById("recipeSelect").value) {
             recipe.Name = document.getElementById("recipeName").value
-            recipe.Image = document.getElementById("fileRecipe").value
+            //recipe.Image = document.getElementById("fileRecipe").value
             recipe.Time  = document.getElementById("recipeTime").value 
             recipe.CountRecipe = document.getElementById("recipeCount").value
             recipe.Type = document.getElementById("recipeType").value

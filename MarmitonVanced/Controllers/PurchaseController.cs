@@ -59,7 +59,7 @@ namespace MarmitonVanced.Controllers
             dr.Close();
             purchases = [.. purchases.Where(purchase => purchase.Quantity > 0)];
             purchases = [.. purchases.OrderBy(purchase => purchase.Name)];
-            sqlCommand = new($"SELECT i.[id],[name],[typeQte],[quantity],[price] FROM [MarmitonVanced].[dbo].[Ingredient] as i join [MarmitonVanced].[dbo].[Article] as a on a.idIngredient = i.id where a.idUser = 9 or a.idUser is NULL", sqlConnection);
+            sqlCommand = new($"SELECT i.[id],[name],[typeQte],[quantity],[price] FROM [MarmitonVanced].[dbo].[Ingredient] as i join [MarmitonVanced].[dbo].[Article] as a on a.idIngredient = i.id where a.idUser = {id} or a.idUser is NULL", sqlConnection);
             dr = sqlCommand.ExecuteReader();
             while (dr.Read())
             {
@@ -87,7 +87,7 @@ namespace MarmitonVanced.Controllers
         public async Task<string> Update()
         {
             var rawRequestBody = await new StreamReader(Request.Body).ReadToEndAsync();
-            List<string> idRecipes = rawRequestBody.Split(",").ToList();
+            List<string> idRecipes = [.. rawRequestBody.Split(",")];
             int id = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
             List<Purchase> purchases = [];
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);

@@ -1,7 +1,8 @@
 ﻿.list {
     display: flex;
     align-items: center;
-    flex-direction: column
+    flex-direction: column;
+    width:98%
 }
 
 .ingredient {
@@ -10,7 +11,7 @@
     margin: 10px;
     display: flex;
     padding: 5px;
-    width: 98%;
+    width: 100%;
     justify-content: space-between;
     font-size: xx-large;
     padding: 10px 30px;
@@ -24,5 +25,26 @@
 .validated p {
     text-decoration: line-through;
     color: #FFFFFF30
+}
+
+.pay{
+    width:98%;
+}
+
+.pay > * {
+    width:100%;
+    margin:5px 0;
+}
+
+    .pay > div:first-of-type {
+        display: flex;
+        justify-content: space-around
+    }
+
+.main{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:100%
 }
 

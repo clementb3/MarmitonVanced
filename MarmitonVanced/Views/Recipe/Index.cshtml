@@ -2,56 +2,114 @@
 @model List<Recipe>
 
 <body class="text-center">
-    <h1 class="display-4">Liste des recettes</h1>
-    <div class="selectType">
-        <button onclick="showTypeRecipe('Entree')">Entrée</button>
-        <button onclick="showTypeRecipe('plat')">Plat</button>
-        <button onclick="showTypeRecipe('dessert')">Dessert</button>
-    </div>
-    <div class="list" id="Entree">
-        @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Entrée))
-        {
-            <button class="recipe" onclick="location.href ='/recipe/details?id=@recipe.Id'">
-                <img src="@recipe.Image" alt="Recette" />
-                <div>
+    <div class="main">
+        <h1 class="display-4">Liste des recettes</h1>
+        <div class="selectType">
+            <button class="frame2" onclick="showTypeRecipe('Tout')">Toute</button>
+            <button class="frame2" onclick="showTypeRecipe('Entree')">Entrée</button>
+            <button class="frame2" onclick="showTypeRecipe('plat')">Plat</button>
+            <button class="frame2" onclick="showTypeRecipe('dessert')">Dessert</button>
+        </div>
+        <div class="list" id="Tout">
+            @foreach (Recipe recipe in Model)
+            {
+                <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
+                    @* <img src="@recipe.Image" alt="Recette" /> *@
                     <div>
-                        <p>@recipe.Name</p>
-                        <p>Temps : @recipe.Time</p>
+                        <div>
+                            <p>@recipe.Name</p>
+                            <p>Nombre de personne : @recipe.CountRecipe</p>
+                        </div>
+                        <div>
+                            <p>Temps : @recipe.Time</p>
+                            @if (recipe.Cost == "")
+                            {
+                                <p></p>
+                            }
+                            else
+                            {
+                                <p class="price">Coût de la recette : @recipe.Cost</p>
+                            }
+                        </div>
                     </div>
-                    <p>@recipe.CountRecipe</p>
-                </div>
-            </button>
-        }
-    </div>
-    <div class="list" id="plat" style="visibility:hidden">
-        @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Plat))
-        {
-            <button class="recipe" onclick="location.href ='/recipe/details?id=@recipe.Id'">
-                <img src="@recipe.Image" alt="Recette" />
-                <div>
+                </button>
+            }
+        </div>
+        <div class="list" id="Entree" style="visibility:hidden">
+            @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Entrée))
+            {
+                <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
+                    @* <img src="@recipe.Image" alt="Recette" /> *@
                     <div>
-                        <p>@recipe.Name</p>
-                        <p>Temps : @recipe.Time</p>
+                        <div>
+                            <p>@recipe.Name</p>
+                            <p>Nombre de personne : @recipe.CountRecipe</p>
+                        </div>
+                        <div>
+                            <p>Temps : @recipe.Time</p>
+                            @if (recipe.Cost == "")
+                            {
+                                <p></p>
+                            }
+                            else
+                            {
+                                <p class="price">Coût de la recette : @recipe.Cost</p>
+                            }
+                        </div>
                     </div>
-                    <p>@recipe.CountRecipe</p>
-                </div>
-            </button>
-        }
-    </div>
-    <div class="list" id="dessert" style="visibility:hidden">
-        @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Dessert))
-        {
-            <button class="recipe" onclick="location.href ='/recipe/details?id=@recipe.Id'">
-                <img src="@recipe.Image" alt="Recette" />
-                <div>
+                </button>
+            }
+        </div>
+        <div class="list" id="plat" style="visibility:hidden">
+            @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Plat))
+            {
+                <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
+                    @* <img src="@recipe.Image" alt="Recette" /> *@
                     <div>
-                        <p>@recipe.Name</p>
-                        <p>Temps : @recipe.Time</p>
+                        <div>
+                            <p>@recipe.Name</p>
+                            <p>Nombre de personne : @recipe.CountRecipe</p>
+                        </div>
+                        <div>
+                            <p>Temps : @recipe.Time</p>
+                            @if (recipe.Cost == "")
+                            {
+                                <p></p>
+                            }
+                            else
+                            {
+                                <p class="price">Coût de la recette : @recipe.Cost</p>
+                            }
+                        </div>
                     </div>
-                    <p>@recipe.CountRecipe</p>
-                </div>
-            </button>
-        }
+                </button>
+            }
+        </div>
+        <div class="list" id="dessert" style="visibility:hidden">
+            @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Dessert))
+            {
+                <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
+                    @* <img src="@recipe.Image" alt="Recette" /> *@
+                    <div>
+                        <div>
+                            <p>@recipe.Name</p>
+                            <p>Nombre de personne : @recipe.CountRecipe</p>
+                        </div>
+                        <div>
+                            <p>Temps : @recipe.Time</p>
+                            @if (recipe.Cost == "")
+                            {
+                                <p></p>
+                            }
+                            else
+                            {
+                                <p class="price">Coût de la recette : @recipe.Cost</p>
+                            }
+                        </div>
+                    </div>
+                </button>
+            }
+        </div>
     </div>
 </body>
 <button onclick="location.href ='recipe/create'" class="addNew">

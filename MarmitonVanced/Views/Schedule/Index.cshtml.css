@@ -13,12 +13,6 @@ td {
 
 
 
-tr > td:first-of-type {
-    width:25px;
-    position:fixed;
-    left:5px;
-}
-
 .schedule {
     display: flex;
     align-content: center;

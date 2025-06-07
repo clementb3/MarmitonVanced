@@ -7,7 +7,7 @@ function updatePriceIngredient(event, id) {
     }
     if (parent.querySelector("#quantity").value > 0 && parent.querySelector("#price").value > 0) {
         let json = { "id": id, "quantity": parent.querySelector("#quantity").value, "price": parent.querySelector("#price").value.replace(",", ".") }
-        fetch("article/Update",
+        fetch("article/update",
             {
                 headers: {
                     'Accept': 'application/json',

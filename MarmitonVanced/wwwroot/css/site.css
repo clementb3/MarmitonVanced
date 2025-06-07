@@ -60,7 +60,8 @@ p {
     bottom: 10px;
     right: 10px;
     position: fixed;
-    width: 20%;
+    min-width: 230px !important;
+    width: 20% !important;
     height: 5%;
     background-color: #00000010;
     border: 1px solid #6c757d;
@@ -92,3 +93,60 @@ main *{
 .price::after {
     content: "\20AC"
 }
+
+.popup {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    background: #00000033;
+    visibility:hidden;
+}
+
+    .popup > div {
+        width: 86%;
+    }
+
+.frame1 {
+    border: solid 1px #6c757d;
+    border-radius: 20px;
+    overflow:hidden;
+    padding:15px;
+}
+
+.frame2 {
+    border: 1px solid #c0a456;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+input,select,textarea {
+    width: 100%;
+    padding: 3px 10px;
+    border: 1px solid #6c757d;
+    border-radius: 14px;
+}
+
+.topBorder {
+    border-top: 1px solid #6c757d;
+}
+
+    textarea:focus, input:focus, select:focus {
+        outline: 1px solid #6c757d;
+    }
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }

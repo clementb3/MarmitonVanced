@@ -39,3 +39,14 @@ function changeUnite(event) {
     event.srcElement.parentNode.querySelector(".unity").textContent = event.srcElement.selectedOptions[0].getAttribute("unity")
 }
 
+function removeMenu(event) {
+    let srcElement = event.srcElement;
+    while (srcElement.nodeName != "HTML") {
+
+        if (srcElement.id == "menu" || srcElement.id == "svgmenu" ) {
+            return "";
+        }
+        srcElement = srcElement.parentNode
+    }
+    document.getElementById("menu").style.width = '0';
+}

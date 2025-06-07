@@ -2,31 +2,32 @@
 @model Recipe
 
 <body class="text-center">
-    <h1>@Model.Name</h1>
-    <div class="detail">
-        <img src="@Model.Image" alt="Recette" />
-        <div>
-            <p>Créer par : @Model.Creator.Name  @Model.Creator.Surname.ToUpper()</p>
-            <p>Durée : @Model.Time</p>
-            <p>@Model.CountRecipe</p>
+    <div class="main">
+        <h1>@Model.Name</h1>
+        <div class="detail">
+            <div class="frame2">
+                <p>Durée : @Model.Time</p>
+                <p>Nombre de personne : @Model.CountRecipe</p>
+                <p class="price">Coût : @Model.Cost</p>
+            </div>
         </div>
-    </div>
-    <div class="recipe">
-        <div>
-            @foreach (Ingredient ingredient in Model.Ingredients)
-            {
-                <div>
-                    <p>@ingredient.Name</p>
-                </div>
-            }
-        </div>
-        <div>
-            @foreach (Step step in Model.Steps)
-            {
-                <p>
-                    Étape @step.Pos : @step.Desc
-                </p>
-            }
+        <div class="recipe">
+            <div>
+                @foreach (Ingredient ingredient in Model.Ingredients)
+                {
+                    <div>
+                        <p>@ingredient.Name - @(ingredient.Quantity)@ingredient.Type</p>
+                    </div>
+                }
+            </div>
+            <div>
+                @foreach (Step step in Model.Steps)
+                {
+                    <p>
+                        Étape @step.Pos : @step.Desc
+                    </p>
+                }
+            </div>
         </div>
     </div>
 </body>

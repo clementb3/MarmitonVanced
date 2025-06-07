@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace MarmitonVanced.Service
 {
-    public class IaService(IConfiguration configuration) : IIaService
+    public class IaService : IIaService
     {
         public List<int> getRecipes(string request)
         {
