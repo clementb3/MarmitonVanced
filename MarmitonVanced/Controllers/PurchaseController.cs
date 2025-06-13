@@ -14,6 +14,10 @@ namespace MarmitonVanced.Controllers
             var rawRequestBody = await new StreamReader(Request.Body).ReadToEndAsync();
             JArray ingredientObject = (JArray)JsonConvert.DeserializeObject(rawRequestBody)!;
             int id = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
+            if (id == -1)
+            {
+                Response.Redirect(configuration["url"] + "/recipe?error=auth");
+            }
             List<Purchase> purchases = [];
             List<Stock> stocks = [];
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);

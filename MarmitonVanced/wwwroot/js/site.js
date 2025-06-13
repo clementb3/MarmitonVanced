@@ -1,6 +1,13 @@
 ﻿let nav = true
 if (location.href.split('search=')[1] != undefined)
     document.getElementById('search').value = location.href.split('search=')[1]
+
+if (location.href.split('error=')[1] != undefined)
+    if (location.href.split('error=')[1].split("&")[0] == "auth") {
+        document.getElementById("error").style.visibility = "visible"
+        document.getElementById("erreurMessage").textContent = "Vous n'êtes pas authentifié. Vous ne pourriez pas accès à cette page."
+        document.getElementById("validationError").addEventListener("click", () => { location.href = location.href.split("?")[0] })
+    }
 function showTypeRecipe(id) {
     for (let list of document.getElementsByClassName("list")) {
         list.style.visibility = "hidden"

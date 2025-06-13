@@ -12,6 +12,10 @@ namespace MarmitonVanced.Controllers
         public IActionResult Index()
         {
             int id = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
+            if (id == -1)
+            {
+                Response.Redirect(configuration["url"] + "/recipe?error=auth");
+            }
             List<object> res = [];
             List<Stock> stocks = [];
             List<Ingredient> ingredients = [];

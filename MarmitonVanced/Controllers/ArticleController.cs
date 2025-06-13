@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace MarmitonVanced.Controllers
 {
@@ -11,6 +12,10 @@ namespace MarmitonVanced.Controllers
         public IActionResult Index()
         {
             int id = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
+            if (id == -1)
+            {
+                Response.Redirect(configuration["url"]+ "/recipe?error=auth");
+            }
             List<Ingredient> ingredients = [];
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
             sqlConnection.Open();

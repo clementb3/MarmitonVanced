@@ -16,7 +16,7 @@ function createAccount() {
     let inputs = document.querySelectorAll("#createAccount input[type=text],#createAccount input[type=password]")
     const content = JSON.stringify({ name: inputs[0].value, surname: inputs[1].value, mail: inputs[2].value, password: inputs[3].value })
     console.log(content)
-    fetch(baseuri + "/account/createaccount",
+    fetch(urlBase + "/account/createaccount",
         {
             headers: {
                 'Accept': 'application/json',
@@ -39,7 +39,7 @@ function connectAccount() {
     let inputs = document.querySelectorAll("#login input[type=text],#login input[type=password]")
     const content = JSON.stringify({ mail: inputs[0].value, password: inputs[1].value })
     console.log(content)
-    fetch(baseuri + "/account/connectaccount",
+    fetch(urlBase + "/account/connectaccount",
         {
             headers: {
                 'Accept': 'application/json',

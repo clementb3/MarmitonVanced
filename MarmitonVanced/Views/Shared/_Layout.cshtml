@@ -69,7 +69,7 @@
             <p></p>
             <div>
                 <input onclick='document.getElementById("logout").style.visibility = "hidden"' type="button" value="Annuler" />
-                <input onclick='document.cookie="token=0"; document.getElementById("logout").style.visibility="hidden"' type="submit" value="Déconnection" />
+                <input onclick='document.cookie="token=0"; document.getElementById("logout").style.visibility="hidden"' type="submit" value="Déconnexion" />
             </div>
         </div>
     </div>
@@ -92,7 +92,7 @@
     <div id="error" class="popup">
         <div class="frame1 error">
             <p id="erreurMessage"></p>
-            <button>Valider</button>
+            <button class="frame1" id="validationError">Valider</button>
         </div>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -67,7 +67,7 @@ namespace MarmitonVanced.Controllers
             int? id = (int?)sqlCommand.ExecuteScalar();
             sqlConnection.Close();
             if (id == null)
-                throw new Exception("token not attributed");
+                return -1;
             return (int)id;
         }
     }
