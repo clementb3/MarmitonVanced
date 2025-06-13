@@ -107,7 +107,7 @@ function changeShedule() {
     }
     body += "]";
 
-    fetch("/Schedule/Update",
+    fetch("schedule/update",
         {
             headers: {
                 'Accept': 'application/json',

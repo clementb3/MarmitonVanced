@@ -23,7 +23,7 @@ function updateIngredient() {
 function validateNewIngredient() {
     let body = "{ \"name\":\"" + document.querySelector(".addIngredient input").value + "\",\"type\":\"" + document.querySelector(".addIngredient select").value + "\"}"
     console.log(body)
-    fetch("stock/addIngredient",
+    fetch("stock/addingredient",
         {
             headers: {
                 'Accept': 'application/json',

@@ -3,9 +3,18 @@ body{
 }
 
 button {
-    border: 1px solid #6c757d;
-    border-radius: 14px;
     width : 20%;
+}
+
+.main{
+    display : flex;
+    align-items:center;
+    flex-direction:column;
+    width:100%;
+}
+
+.main > * {
+    width:98%;
 }
 
 .selectType {
@@ -14,8 +23,6 @@ button {
 }
 
 .recipe {
-    border: 1px solid #c0a456;
-    border-radius: 14px;
     margin: 10px;
     display: flex;
     padding: 5px;

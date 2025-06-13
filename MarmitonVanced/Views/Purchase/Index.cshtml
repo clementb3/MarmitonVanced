@@ -1,47 +1,49 @@
 ﻿@using Models
 @model List<Purchase>
 <body class="text-center">
-    <h1 class="display-4">Liste des recettes</h1>
-    <div class="list">
-        @foreach (Purchase purchase in Model)
-        {
-            <button onclick="validated(event)" class="ingredient" id="@purchase.Id">
-                <p>@purchase.Name</p>
-                <p>@purchase.Quantity @purchase.Type</p>
-                <div>
-                    @foreach (string recipe in purchase.Recipes)
+    <div class="main">
+        <h1 class="display-4">Liste des recettes</h1>
+        <div class="list">
+            @foreach (Purchase purchase in Model)
+            {
+                <button onclick="validated(event)" class="ingredient" id="@purchase.Id">
+                    <p>@purchase.Name</p>
+                    <p>@purchase.Quantity @purchase.Type</p>
+                    <div>
+                        @foreach (string recipe in purchase.Recipes)
+                        {
+                            <p>@recipe</p>
+                        }
+                    </div>
+                    @if (purchase.Price == 0)
                     {
-                        <p>@recipe</p>
+                        <p class="price">?</p>
                     }
-                </div>
-                @if (purchase.Price == 0)
-                {
-                    <p class="price">?</p>
-                }
-                else
-                {
-                    <p class="price">@purchase.Price</p>
-                }
-            </button>
-        }
-    </div>
-    <div>
-        <div>
-            <div>
-                <p>Prix total</p>
-                <p>
-                    @Model.Sum(purchase => purchase.Price)
-                    @if (@Model.Exists(purchase => purchase.Price == 0))
+                    else
                     {
-                    <p class="price">+ ?</p>
+                        <p class="price">@Math.Round(purchase.Price,2)</p>
                     }
-            </div>
-            <div>
-                <p>Prix actuel des achats</p>
-                <p class="price">0</p>
-            </div>
+                </button>
+            }
         </div>
-        <button onclick="purchase()">Valider les articles</button>
+        <div class="pay">
+            <div class="frame1">
+                <div>
+                    <p>Prix total</p>
+                    <p>
+                        @Model.Sum(purchase => purchase.Price)
+                        @if (@Model.Exists(purchase => purchase.Price == 0))
+                        {
+                        <p class="price">+ ?</p>
+                        }
+                </div>
+                <div>
+                    <p>Prix actuel des achats</p>
+                    <p id="actualPrice" class="price">0</p>
+                </div>
+            </div>
+            <button class="frame1 " onclick="purchase()">Valider les articles</button>
+        </div>
     </div>
 </body>
 <script src="~/js/Purchase.js"></script>

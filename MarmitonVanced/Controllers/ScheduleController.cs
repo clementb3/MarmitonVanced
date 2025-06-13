@@ -27,11 +27,6 @@ namespace MarmitonVanced.Controllers
                     Image = "/images/" + dr.GetString(3),
                     Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                     CountRecipe = dr.GetInt32(5),
-                    Creator = new()
-                    {
-                        Name = dr.GetString(6),
-                        Surname = dr.GetString(7),
-                    }
                 });
             }
             dr.Close();

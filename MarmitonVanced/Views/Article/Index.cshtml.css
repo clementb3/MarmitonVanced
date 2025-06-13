@@ -1,0 +1,30 @@
+﻿.listIngredient{
+    padding:5px;
+}
+.ingredient {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+.ingredient input {
+width:90%
+}
+
+    .ingredient > div {
+        overflow:visible;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width:33%
+    }
+    .ingredient > p {
+        width:20%
+    }
+    .ingredient  p {
+        margin:0 5px;
+        text-align:left
+    }
+

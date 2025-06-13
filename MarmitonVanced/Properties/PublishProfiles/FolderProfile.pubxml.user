@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\inetpub\marmitonVanced</_PublishTargetUrl>
+    <History>True|2025-05-26T16:53:44.3570033Z||;True|2025-05-26T18:53:14.0246439+02:00||;True|2025-05-26T18:45:47.2446757+02:00||;True|2025-05-26T18:41:33.4565348+02:00||;True|2025-05-26T18:14:18.7663521+02:00||;True|2025-05-26T18:12:37.3003325+02:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

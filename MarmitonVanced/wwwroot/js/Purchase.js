@@ -1,15 +1,18 @@
-﻿function validated(event) {
+﻿let price = 0
+function validated(event) {
     let srcElement = event.srcElement
     while (srcElement.nodeName != "BUTTON")
         srcElement = srcElement.parentNode
-    if (!srcElement.className.includes("validated"))
+    if (!srcElement.className.includes("validated")) {
         srcElement.className += " validated"
-    else
-        srcElement.className = srcElement.className.replace("validated", "")
-
-    for (let article of document.getElementsByClassName("validated")) {
-        list += article.id + ","
+        price += parseFloat(srcElement.querySelector(".price").textContent.replace(",","."))
     }
+    else {
+        srcElement.className = srcElement.className.replace("validated", "")
+        price -= parseFloat(srcElement.querySelector(".price").textContent.replace(",", "."))
+    }
+    document.getElementById("actualPrice").textContent = price
+
 }
 
 function purchase() {
@@ -18,7 +21,7 @@ function purchase() {
         list += article.id + ","
     }
     list = list.slice(0, -1)
-    fetch("purchase /Update",
+    fetch("purchase/update",
         {
             headers: {
                 'Accept': 'application/json',

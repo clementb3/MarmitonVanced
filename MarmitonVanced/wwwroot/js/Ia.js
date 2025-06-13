@@ -2,8 +2,8 @@
 
 function SubmitRequest() {
     let requestElement = document.getElementById("request")
-    if (requestElement.value.replaceAll(" ", "") != "") {
-        fetch("ia/RequestIa",
+    if (requestElement.value.replaceAll(" ","") != "") {
+        fetch("ia/requestia",
             {
                 headers: {
                     'Accept': 'application/json',
