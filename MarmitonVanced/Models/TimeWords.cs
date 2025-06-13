@@ -2,8 +2,8 @@
 {
     public class TimeWords
     {
-        public List<string> Short { get; set; }
-        public List<string> Medium { get; set; }
-        public List<string> Long { get; set; }
+        public required List<string> Short { get; set; }
+        public required List<string> Medium { get; set; }
+        public required List<string> Long { get; set; }
     }
 }

@@ -13,23 +13,22 @@ namespace MarmitonVanced.Service
 {
     public class IaService : IIaService
     {
-        private List<string> StopWord = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("stop_words_french.json"))!;
+        private readonly List<string> StopWord = JsonSerializer.Deserialize<List<string>>(File.ReadAllText("stop_words_french.json"))!;
         private List<Recipe> Recipes = [];
 
-        public List<int> getRecipes(string request)
+        public List<int> GetRecipes(string request)
         {
             UpdateRecettes();
             request = request.ToLower();
-            string promptTemp = Regex.Replace(request, @"[^\p{L}\s]", ""); 
+            string promptTemp = Regex.Replace(request, @"[^\p{L}\s]", "");
 
             string[] mots = promptTemp.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-            List<string> motsCles = mots
+            List<string> motsCles = [.. mots
                 .Where(m => !StopWord.Contains(m))
                 .Select(m => m.ToLower())
-                .Select(m => m.EndsWith("s") && m.Length > 1 ? m.Substring(0, m.Length - 1) : m)
-                .Distinct()
-                .ToList();
+                .Select(m => m.EndsWith('s') && m.Length > 1 ? m[..^1] : m)
+                .Distinct()];
 
             List<Recipe> recipesScored = GetScores(motsCles, request);
 
@@ -59,20 +58,20 @@ namespace MarmitonVanced.Service
                 int countLong = timeWord.Long.Count(m => motsCles.Contains(m));
                 if (countShort > 0 || countMedium > 0 || countLong > 0)
                 {
-                if (countShort > countMedium && countShort > countLong)
-                    recipes = recipes.Where(recetteTime => recetteTime.Time.TotalMinutes <= 20).ToList();
-                else if (countLong > countShort && countLong > countMedium)
-                    recipes = recipes.Where(recetteTime => recetteTime.Time.TotalMinutes > 40).ToList();
-                else
-                    recipes = recipes.Where(recetteTime => recetteTime.Time.TotalMinutes > 20 && recetteTime.Time.TotalMinutes <= 40).ToList();
+                    if (countShort > countMedium && countShort > countLong)
+                        recipes = [.. recipes.Where(recetteTime => recetteTime.Time.TotalMinutes <= 20)];
+                    else if (countLong > countShort && countLong > countMedium)
+                        recipes = [.. recipes.Where(recetteTime => recetteTime.Time.TotalMinutes > 40)];
+                    else
+                        recipes = [.. recipes.Where(recetteTime => recetteTime.Time.TotalMinutes > 20 && recetteTime.Time.TotalMinutes <= 40)];
                 }
             }
             if (motsCles.Contains("dessert") || motsCles.Contains("desserts"))
-                recipes = recipes.Where(recetteTime => recetteTime.Type == RecipeType.Dessert).ToList();
+                recipes = [.. recipes.Where(recetteTime => recetteTime.Type == RecipeType.Dessert)];
             if (motsCles.Contains("entrée") || motsCles.Contains("entré") || motsCles.Contains("entree") || motsCles.Contains("entre") || motsCles.Contains("entrées") || motsCles.Contains("entrés") || motsCles.Contains("entrees") || motsCles.Contains("entres"))
-                recipes = recipes.Where(recetteTime => recetteTime.Type == RecipeType.Entrée).ToList();
+                recipes = [.. recipes.Where(recetteTime => recetteTime.Type == RecipeType.Entrée)];
             if (motsCles.Contains("plat") || motsCles.Contains("plats"))
-                recipes = recipes.Where(recetteTime => recetteTime.Type == RecipeType.Plat).ToList();
+                recipes = [.. recipes.Where(recetteTime => recetteTime.Type == RecipeType.Plat)];
             recipes = [.. recipes
                 .Select(recipe => new
                 {

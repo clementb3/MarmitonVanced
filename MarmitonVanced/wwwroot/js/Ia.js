@@ -14,7 +14,7 @@ function SubmitRequest() {
             }).then((res) => res.json().then(
                 (content) => {
                     let html = ""
-                    if (jQuery.parseJSON(content).length == 0) {
+                    if (JSON.parse(content).length == 0) {
                         html =
                             "<div class=\"response\">" +
                             "   <div>" +
@@ -29,7 +29,7 @@ function SubmitRequest() {
                             "       <p>Voici les recette qui pourrait corespondre a votre demande :</p>" +
                             "       <ul>"
 
-                        for (let recipe of jQuery.parseJSON(content)) {
+                        for (let recipe of JSON.parse(content)) {
                             html += "<li> <a href=\"/Recipe/details?id=" + recipe.Id + "\">" + recipe.Name + "</a></li>"
                         }
                         html +=

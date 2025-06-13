@@ -2,6 +2,6 @@
 {
     public interface IIaService
     {
-        List<int> getRecipes(string request);
+        List<int> GetRecipes(string request);
     }
 }

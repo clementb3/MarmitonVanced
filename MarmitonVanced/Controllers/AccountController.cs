@@ -18,7 +18,7 @@ namespace MarmitonVanced.Controllers
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
             sqlConnection.Open();
             SqlCommand sqlCommand = new($"INSERT INTO [dbo].[User] ([name],[surname],[mail],[password],[state]) VALUES ('{accountObject["name"]}','{accountObject["surname"]}','{accountObject["mail"]}','{accountObject["password"]}','wait'); select id from [dbo].[User] where [mail]='{accountObject["mail"]}'", sqlConnection);
-            int id = (int) sqlCommand.ExecuteScalar();
+            int id = (int)sqlCommand.ExecuteScalar();
             string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
             sqlCommand = new($"INSERT INTO [dbo].[Token] ([idUser],[token]) VALUES ({id},'{token}')", sqlConnection);
             sqlCommand.ExecuteNonQuery();
@@ -35,7 +35,7 @@ namespace MarmitonVanced.Controllers
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
             sqlConnection.Open();
             SqlCommand sqlCommand = new($"select id from [dbo].[User] where [mail]='{accountObject["mail"]}' and [password]='{accountObject["password"]}'", sqlConnection);
-            int? id = (int?) sqlCommand.ExecuteScalar();
+            int? id = (int?)sqlCommand.ExecuteScalar();
             if (id == null)
                 return "error : mauvais identifiant";
             string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
@@ -63,7 +63,7 @@ namespace MarmitonVanced.Controllers
         {
             SqlConnection sqlConnection = new(connectionString);
             sqlConnection.Open();
-            SqlCommand sqlCommand = new($"SELECT [idUser] FROM [MarmitonVanced].[dbo].[Token] where [token]='{token.Replace("\"","")}'", sqlConnection);
+            SqlCommand sqlCommand = new($"SELECT [idUser] FROM [MarmitonVanced].[dbo].[Token] where [token]='{token.Replace("\"", "")}'", sqlConnection);
             int? id = (int?)sqlCommand.ExecuteScalar();
             sqlConnection.Close();
             if (id == null)

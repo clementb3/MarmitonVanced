@@ -20,7 +20,7 @@ namespace MarmitonVanced.Controllers
             try
             {
                 id = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
-                            }
+            }
             catch { }
             SqlDataReader dr;
             if (id == null)
@@ -71,7 +71,7 @@ namespace MarmitonVanced.Controllers
                     }
                 }
             }
-                
+
             dr.Close();
             sqlConnection.Close();
             return View(recipes);
@@ -180,7 +180,7 @@ namespace MarmitonVanced.Controllers
         {
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
             sqlConnection.Open();
-            Recipe recipe = new Recipe();
+            Recipe recipe = new();
             int? idUser = null;
             try
             {
@@ -274,7 +274,7 @@ namespace MarmitonVanced.Controllers
             return View(recipe);
         }
 
-        public async Task<string> updateRecipe()
+        public async Task<string> UpdateRecipe()
         {
             var rawRequestBody = await new StreamReader(Request.Body).ReadToEndAsync();
             JArray recipesObject = (JArray)JsonConvert.DeserializeObject(rawRequestBody)!;
@@ -282,10 +282,10 @@ namespace MarmitonVanced.Controllers
 
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
             sqlConnection.Open();
-            foreach (JObject recipe in recipesObject)
+            foreach (JObject recipe in recipesObject.Cast<JObject>())
             {
                 SqlCommand sqlCommand;
-                if (((JArray)recipe["Ingredients"]!).Count() > 0 && ((JArray)recipe["Steps"]!).Count() > 0)
+                if (((JArray)recipe["Ingredients"]!).Any() && ((JArray)recipe["Steps"]!).Any())
                 {
 
                     if ((int)(recipe["Id"]!) < 0)
@@ -301,7 +301,7 @@ namespace MarmitonVanced.Controllers
                         sqlCommand.ExecuteNonQuery();
                     }
                     int maxpos = 0;
-                        foreach (JObject steps in recipe["Steps"]!)
+                    foreach (JObject steps in recipe["Steps"]!.Cast<JObject>())
                     {
                         maxpos++;
                         sqlCommand = new($"SELECT COUNT(*) FROM [MarmitonVanced].[dbo].[Step] where idRecipe = {recipe["Id"]} and pos = {steps["Pos"]}", sqlConnection);
@@ -321,7 +321,7 @@ namespace MarmitonVanced.Controllers
                     sqlCommand = new($"delete FROM [MarmitonVanced].[dbo].[IngredientUsed] where [idRecipe] = {recipe["Id"]}", sqlConnection);
                     sqlCommand.ExecuteNonQuery();
 
-                    foreach (JObject ingredient in recipe["Ingredients"]!)
+                    foreach (JObject ingredient in recipe["Ingredients"]!.Cast<JObject>())
                     {
                         sqlCommand = new($"INSERT INTO [dbo].[IngredientUsed]([idRecipe],[idIngredient],[qte]) VALUES ({recipe["Id"]},'{ingredient["Id"]}',{ingredient["Quantity"]})", sqlConnection);
                         sqlCommand.ExecuteNonQuery();
@@ -333,7 +333,7 @@ namespace MarmitonVanced.Controllers
             return "validate";
         }
 
-        public string removeRecipe(int idRecipe)
+        public string RemoveRecipe(int idRecipe)
         {
             int id = AccountController.GetIdUser(configuration["ConnectionStrings:db"]!, Request.Cookies["token"] ?? "");
 
@@ -358,7 +358,7 @@ namespace MarmitonVanced.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("Aucun fichier envoyé.");
 
-            var directory ="wwwroot/images";
+            var directory = "wwwroot/images";
 
 
             string FileName = Guid.NewGuid() + Path.GetExtension(file.FileName);

@@ -2,9 +2,9 @@
 {
     public enum TypeQuantity
     {
-        U=0,
-        G=1,
-        cL=2,
-        Sachet=3,
+        U = 0,
+        G = 1,
+        L = 2,
+        Sachet = 3,
     }
 }

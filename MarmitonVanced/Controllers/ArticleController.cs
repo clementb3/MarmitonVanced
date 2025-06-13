@@ -44,7 +44,7 @@ namespace MarmitonVanced.Controllers
             sqlConnection.Open();
             SqlCommand sqlCommand = new($"SELECT COUNT(*) FROM [MarmitonVanced].[dbo].[Article] where [idUser]={id} and [idIngredient]={ingredientObject["id"]}", sqlConnection);
 
-            if ((int) sqlCommand.ExecuteScalar() == 0)
+            if ((int)sqlCommand.ExecuteScalar() == 0)
             {
                 sqlCommand = new($"INSERT INTO [dbo].[Article] ([idUser],[idIngredient],[quantity],[price]) VALUES ({id},{ingredientObject["id"]},{ingredientObject["quantity"]},{ingredientObject["price"]})", sqlConnection);
                 sqlCommand.ExecuteNonQuery();

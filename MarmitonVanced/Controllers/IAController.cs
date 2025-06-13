@@ -8,7 +8,7 @@ using MarmitonVanced.Abstract;
 
 namespace MarmitonVanced.Controllers
 {
-    public class IAController(IConfiguration configuration,IIaService iaService) : Controller
+    public class IAController(IConfiguration configuration, IIaService iaService) : Controller
     {
         public IActionResult Index()
         {
@@ -36,7 +36,7 @@ namespace MarmitonVanced.Controllers
                 {
                     Id = dr.GetInt32(0),
                     Request = dr.GetString(1),
-                    Recipes = recipes.Where(recipe => dr.GetString(2).Split(",").Contains(recipe.Id.ToString())).ToList()
+                    Recipes = [.. recipes.Where(recipe => dr.GetString(2).Split(",").Contains(recipe.Id.ToString()))]
                 });
             }
             dr.Close();
@@ -52,7 +52,7 @@ namespace MarmitonVanced.Controllers
             string request = requestObject["request"]!.ToString();
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
             sqlConnection.Open();
-            List<Recipe> recipes = new List<Recipe>();
+            List<Recipe> recipes = [];
             SqlCommand sqlCommand = new($"SELECT [id],[name] FROM [MarmitonVanced].[dbo].[Recipe]", sqlConnection);
             SqlDataReader dr = sqlCommand.ExecuteReader();
             while (dr.Read())
@@ -64,10 +64,10 @@ namespace MarmitonVanced.Controllers
                 });
             }
             dr.Close();
-            Prompt prompt = new ()
+            Prompt prompt = new()
             {
                 Request = request,
-                Recipes = recipes.Where(recipe => iaService.getRecipes(request).Contains(recipe.Id)).ToList() ,
+                Recipes = [.. recipes.Where(recipe => iaService.GetRecipes(request).Contains(recipe.Id))],
             };
             sqlCommand = new($"INSERT INTO [dbo].[Prompt]([request],[response],[userId]) VALUES('{request}','{String.Join(",", prompt.Recipes.Select(recipe => recipe.Id))}',{id})", sqlConnection);
             sqlCommand.ExecuteNonQuery();
