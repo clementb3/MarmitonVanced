@@ -1,15 +1,16 @@
 ﻿body {
 }
 
-table{
-    width:auto;
+table {
+    width: 100%;
 }
 
 td {
     border: solid 1px #6c757d;
-    width:180px;
+    width:12%;
     height:45px;
 }
+
 
 
 
@@ -53,7 +54,7 @@ td:hover > .add {
     }
 
 .new {
-    visibility:hidden;
+    visibility: hidden;
     position: fixed;
     right: 10px;
     bottom: 20px;
@@ -64,7 +65,8 @@ td:hover > .add {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    overflow:hidden;
+    overflow: hidden;
+    min-width: 200px;
 }
 
 .new > div{

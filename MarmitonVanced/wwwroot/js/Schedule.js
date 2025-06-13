@@ -59,6 +59,7 @@ function addSchedule(date, hour, event) {
 function updateRecipe() {
     for (let i in schedule) {
         if (i != 0) {
+            console.log(i)
             let scheduleElement = document.getElementById(i)
             let html = "<div class='recipeday'>"
             for (let recipe of schedule[i][0]) {

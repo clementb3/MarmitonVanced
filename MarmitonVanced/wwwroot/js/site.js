@@ -8,6 +8,10 @@ function showTypeRecipe(id) {
     }
     document.getElementById(id).style.visibility = "visible"
     document.getElementById(id).style.height = "auto"
+    for (let button of document.querySelectorAll(".selectType > button")) {
+        button.className ="frame1"
+    }
+    document.getElementById(id + "Button").className = "frame2"
 }
 
 function showMenuNav() {

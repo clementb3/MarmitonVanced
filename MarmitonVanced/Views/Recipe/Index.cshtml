@@ -4,15 +4,15 @@
 <body class="text-center">
     <h1 class="display-4">Liste des recettes</h1>
     <div class="selectType">
-        <button class="frame2" onclick="showTypeRecipe('tout')">Tous</button>
-        <button class="frame2" onclick="showTypeRecipe('Entree')">Entrée</button>
-        <button class="frame2" onclick="showTypeRecipe('plat')">Plat</button>
-        <button class="frame2" onclick="showTypeRecipe('dessert')">Dessert</button>
+        <button id="toutButton" class="frame2" onclick="showTypeRecipe('tout')">Tous</button>
+        <button id="entreeButton" class="frame1" onclick="showTypeRecipe('entree')">Entrée</button>
+        <button id="platButton" class="frame1" onclick="showTypeRecipe('plat')">Plat</button>
+        <button id="dessertButton" class="frame1" onclick="showTypeRecipe('dessert')">Dessert</button>
     </div>
     <div class="list" id="tout">
         @foreach (Recipe recipe in Model)
         {
-            <button class="recipe" onclick="location.href ='/recipe/details?id=@recipe.Id'">
+            <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
                 @if (@recipe.Image != "")
                 {
                     <img src="../images/@recipe.Image" alt="Recette" />
@@ -44,7 +44,7 @@
             </button>
         }
     </div>
-    <div class="list" id="Entree" style="visibility:hidden">
+    <div class="list" id="entree" style="visibility:hidden">
         @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Entrée))
         {
             <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
