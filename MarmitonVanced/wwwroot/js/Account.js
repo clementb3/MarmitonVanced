@@ -35,6 +35,12 @@ function createAccount() {
         .catch(function (res) { console.log(res) })
 }
 
+function deco() {
+    fetch(urlBase + "/account/Deconnect").then(()=>    document.cookie = "token=0"
+)
+    document.getElementById("logout").style.visibility = "hidden"
+}
+
 function connectAccount() {
     let inputs = document.querySelectorAll("#login input[type=text],#login input[type=password]")
     const content = JSON.stringify({ mail: inputs[0].value, password: inputs[1].value })

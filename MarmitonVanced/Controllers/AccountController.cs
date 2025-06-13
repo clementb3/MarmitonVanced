@@ -46,6 +46,15 @@ namespace MarmitonVanced.Controllers
             return token;
         }
 
+        public void Deconnect()
+        {
+            SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
+            sqlConnection.Open();
+            SqlCommand sqlCommand = new($"delete [MarmitonVanced].[dbo].[Token] where token='{Request.Cookies["token"].Replace("\"","") ?? ""}'", sqlConnection);
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
 
         private static String Sha256Hash(String value)
         {
