@@ -34,7 +34,7 @@ namespace MarmitonVanced.Controllers
                         Id = dr.GetInt32(0),
                         Name = dr.GetString(1),
                         Time = dr.GetTimeSpan(2),
-                        Image = "/images/" + dr.GetString(3),
+                        Image =  dr.GetString(3),
                         Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                         CountRecipe = dr.GetInt32(5),
                     });
@@ -53,7 +53,7 @@ namespace MarmitonVanced.Controllers
                         Id = dr.GetInt32(0),
                         Name = dr.GetString(1),
                         Time = dr.GetTimeSpan(2),
-                        Image = "/images/" + dr.GetString(3),
+                        Image =  dr.GetString(3),
                         Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                         CountRecipe = dr.GetInt32(5),
                     });
@@ -200,7 +200,7 @@ namespace MarmitonVanced.Controllers
                         Id = dr.GetInt32(0),
                         Name = dr.GetString(1),
                         Time = dr.GetTimeSpan(2),
-                        Image = "/images/" + dr.GetString(3),
+                        Image =  dr.GetString(3),
                         Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                         CountRecipe = dr.GetInt32(5),
                     };
@@ -220,7 +220,7 @@ namespace MarmitonVanced.Controllers
                         Id = dr.GetInt32(0),
                         Name = dr.GetString(1),
                         Time = dr.GetTimeSpan(2),
-                        Image = "/images/" + dr.GetString(3),
+                        Image =  dr.GetString(3),
                         Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                         CountRecipe = dr.GetInt32(5),
                         Cost = Math.Round(dr.GetDecimal(6), 2).ToString(),
@@ -290,14 +290,14 @@ namespace MarmitonVanced.Controllers
 
                     if ((int)(recipe["Id"]!) < 0)
                     {
-                        sqlCommand = new($"INSERT INTO [dbo].[Recipe]([name],[time],[image],[idUser],[type],[count])VALUES('{recipe["Name"]}','{recipe["Time"]}','{recipe["Image"]}',{id},'{Enum.Parse(typeof(RecipeType), recipe["Type"]!.ToString())}',{recipe["CountRecipe"]})", sqlConnection);
+                        sqlCommand = new($"INSERT INTO [dbo].[Recipe]([name],[time],[image],[idUser],[type],[count])VALUES('{recipe["Name"]!.ToString().Replace("'","''")}','{recipe["Time"]}','{recipe["Image"]}',{id},'{Enum.Parse(typeof(RecipeType), recipe["Type"]!.ToString())}',{recipe["CountRecipe"]})", sqlConnection);
                         sqlCommand.ExecuteNonQuery();
-                        sqlCommand = new($"select [id] from [dbo].[Recipe] where [name]='{recipe["Name"]}' and [time]='{recipe["Time"]}' and [image]='{recipe["Image"]}' and [idUser]={id} and [type]='{Enum.Parse(typeof(RecipeType), recipe["Type"]!.ToString())}' and [count]={recipe["CountRecipe"]}", sqlConnection);
+                        sqlCommand = new($"select [id] from [dbo].[Recipe] where [name]='{recipe["Name"]!.ToString().Replace("'", "''")}' and [time]='{recipe["Time"]}' and [image]='{recipe["Image"]}' and [idUser]={id} and [type]='{Enum.Parse(typeof(RecipeType), recipe["Type"]!.ToString())}' and [count]={recipe["CountRecipe"]}", sqlConnection);
                         recipe["Id"] = (int)sqlCommand.ExecuteScalar();
                     }
                     else
                     {
-                        sqlCommand = new($"UPDATE [dbo].[Recipe] SET [name] = '{recipe["Name"]}',[time] ='{recipe["Time"]}',[image] ='{recipe["Image"]}',[idUser] ={id},[type] ='{Enum.Parse(typeof(RecipeType), recipe["Type"]!.ToString())}',[count] ={recipe["CountRecipe"]} WHERE id= {recipe["Id"]}", sqlConnection);
+                        sqlCommand = new($"UPDATE [dbo].[Recipe] SET [name] = '{recipe["Name"]!.ToString().Replace("'", "''")}',[time] ='{recipe["Time"]}',[image] ='{recipe["Image"]}',[idUser] ={id},[type] ='{Enum.Parse(typeof(RecipeType), recipe["Type"]!.ToString())}',[count] ={recipe["CountRecipe"]} WHERE id= {recipe["Id"]}", sqlConnection);
                         sqlCommand.ExecuteNonQuery();
                     }
                     int maxpos = 0;
@@ -307,12 +307,12 @@ namespace MarmitonVanced.Controllers
                         sqlCommand = new($"SELECT COUNT(*) FROM [MarmitonVanced].[dbo].[Step] where idRecipe = {recipe["Id"]} and pos = {steps["Pos"]}", sqlConnection);
                         if ((int)sqlCommand.ExecuteScalar() == 1)
                         {
-                            sqlCommand = new($"UPDATE [dbo].[Step] SET [desc] = '{steps["Desc"]}'  where idRecipe = {recipe["Id"]} and pos = {steps["Pos"]}", sqlConnection);
+                            sqlCommand = new($"UPDATE [dbo].[Step] SET [desc] = '{steps["Desc"]!.ToString().Replace("'", "''")}'  where idRecipe = {recipe["Id"]} and pos = {steps["Pos"]}", sqlConnection);
                             sqlCommand.ExecuteNonQuery();
                         }
                         else
                         {
-                            sqlCommand = new($"INSERT INTO [dbo].[Step]([idRecipe],[desc],[pos]) VALUES ({recipe["Id"]},'{steps["Desc"]}',{steps["Pos"]})", sqlConnection);
+                            sqlCommand = new($"INSERT INTO [dbo].[Step]([idRecipe],[desc],[pos]) VALUES ({recipe["Id"]},'{steps["Desc"]!.ToString().Replace("'", "''")}',{steps["Pos"]})", sqlConnection);
                             sqlCommand.ExecuteNonQuery();
                         }
                     }
