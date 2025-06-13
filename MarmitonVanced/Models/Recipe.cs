@@ -11,5 +11,6 @@
         public int CountRecipe { get; set; }
         public List<Ingredient> Ingredients { get; set; } = [];
         public List<Step> Steps { get; set; } = [];
+        public string Description { get; set; } = "";
     }
 }

@@ -1,8 +1,8 @@
-﻿document.querySelector("html").scrollTop = document.querySelector("html").clientHeight
+﻿document.querySelector("html").scrollTop = document.querySelector("html").offsetHeight
 
 function SubmitRequest() {
     let requestElement = document.getElementById("request")
-    if (requestElement.value.replaceAll(" ","") != "") {
+    if (requestElement.value.replaceAll(" ", "") != "") {
         fetch("ia/RequestIa",
             {
                 headers: {
@@ -13,22 +13,33 @@ function SubmitRequest() {
                 body: "{\"request\":\"" + requestElement.value + "\"}"
             }).then((res) => res.json().then(
                 (content) => {
-
-                    let html =
-                        "<div class=\"response\">" +
-                        "   <div>" +
-                        "       <p>Voici les recette qui pourrait corespondre a votre demande :</p>" +
-                        "       <ul>"
-
-                    for (let recipe of jQuery.parseJSON(content)) {
-                        html += "<li> <a href=\"/Recipe/details?id="+recipe.Id+"\">"+recipe.Name+"</a></li>"
+                    let html = ""
+                    if (jQuery.parseJSON(content).length == 0) {
+                        html =
+                            "<div class=\"response\">" +
+                            "   <div>" +
+                            "       <p>Aucune recettes ne peux convenir</p>" +
+                            "   </div > " +
+                            "</div > "
                     }
-                    html +=
-                        "       </ul>" +
-                        "   </div > " +
-                        "</div > "
+                    else {
+                        html =
+                            "<div class=\"response\">" +
+                            "   <div>" +
+                            "       <p>Voici les recette qui pourrait corespondre a votre demande :</p>" +
+                            "       <ul>"
+
+                        for (let recipe of jQuery.parseJSON(content)) {
+                            html += "<li> <a href=\"/Recipe/details?id=" + recipe.Id + "\">" + recipe.Name + "</a></li>"
+                        }
+                        html +=
+                            "       </ul>" +
+                            "   </div > " +
+                            "</div > "
+                    }
+
                     document.getElementById("prompts").innerHTML += html
-                    document.querySelector("html").scrollTop = document.querySelector("html").clientHeight
+                    document.querySelector("html").scrollTop = document.querySelector("html").offsetHeight
 
                 }))
             .catch(() => "Veuillez vous connecter")
@@ -36,7 +47,7 @@ function SubmitRequest() {
             "<div class=\"request\">" +
             "   <p>" + requestElement.value + "</p>" +
             "</div > "
-        document.querySelector("html").scrollTop = document.querySelector("html").clientHeight
+        document.querySelector("html").scrollTop = document.querySelector("html").offsetHeight
         requestElement.value = "";
     }
 }

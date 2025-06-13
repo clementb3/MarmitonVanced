@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using static System.Net.WebRequestMethods;
 
 namespace MarmitonVanced.Controllers
 {
@@ -23,7 +24,7 @@ namespace MarmitonVanced.Controllers
                     Id = dr.GetInt32(0),
                     Name = dr.GetString(1),
                     Time = dr.GetTimeSpan(2),
-                    Image = "/images/" + dr.GetString(3),
+                    Image = dr.GetString(3),
                     Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                     CountRecipe = dr.GetInt32(5),
                     Creator = new()
@@ -64,7 +65,7 @@ namespace MarmitonVanced.Controllers
                     Id = dr.GetInt32(0),
                     Name = dr.GetString(1),
                     Time = dr.GetTimeSpan(2),
-                    Image = "/images/" + dr.GetString(3),
+                    Image = dr.GetString(3),
                     Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                     CountRecipe = dr.GetInt32(5),
                     Creator = new()
@@ -132,7 +133,7 @@ namespace MarmitonVanced.Controllers
                     Id = dr.GetInt32(0),
                     Name = dr.GetString(1),
                     Time = dr.GetTimeSpan(2),
-                    Image = "/images/" + dr.GetString(3),
+                    Image = dr.GetString(3),
                     Type = (RecipeType)Enum.Parse(typeof(RecipeType), dr.GetString(4)),
                     CountRecipe = dr.GetInt32(5),
                     Creator = new()
@@ -278,6 +279,26 @@ namespace MarmitonVanced.Controllers
             sqlCommand = new($"delete from [dbo].[Recipe] where [id]={idRecipe}", sqlConnection);
             sqlCommand.ExecuteNonQuery();
             return "validate";
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("Aucun fichier envoyé.");
+
+            var directory ="wwwroot/images";
+
+
+            string FileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(directory, FileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return Ok(FileName);
         }
     }
 }

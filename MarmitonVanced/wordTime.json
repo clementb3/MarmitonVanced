@@ -1,0 +1,31 @@
+{
+  "Short": [
+    "rapide",
+    "express",
+    "instantané",
+    "immédiat",
+    "aussitôt",
+    "tout de suite",
+    "maintenant",
+    "immédiatement",
+    "accéléré",
+    "urgent",
+    "bref",
+    "court"
+  ],
+  "Medium": [
+    "modéré",
+    "à peu près",
+    "quelques",
+    "moyen" 
+  ],
+  "Long": [
+    "long",
+    "prolongé",
+    "durable",
+    "constant",
+    "permanent",
+    "heure",
+    "heures"
+  ]
+}

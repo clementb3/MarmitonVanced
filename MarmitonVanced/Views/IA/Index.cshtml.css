@@ -27,3 +27,7 @@
         border: solid 1px #6c757d;
         border-radius: 5px;
     }
+
+.response p {
+    text-align:center
+}

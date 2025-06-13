@@ -29,6 +29,13 @@ button {
     width: 7%;
 }
 
+
+.list svg {
+    border-radius: 14px;
+    margin-right: 10px;
+    width: 7%;
+}
+
 .recipe > div {
     display: flex;
     flex-direction: column;

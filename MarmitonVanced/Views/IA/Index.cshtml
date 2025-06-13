@@ -10,13 +10,20 @@
             </div>
             <div class="response">
                 <div>
-                    <p>Voici les recette qui pourrait corespondre a votre demande :</p>
-                    <ul>
-                        @foreach (Recipe recipe in prompt.Recipes)
-                        {
-                            <li><a href="/Recipe/details?id=@recipe.Id">@recipe.Name</a></li>
-                        }
-                    </ul>
+                    @if (prompt.Recipes.Count == 0)
+                    {
+                        <p>Aucune recettes ne peux convenir</p>
+                    }
+                    else
+                    {
+                        <p>Voici les recette qui pourrait corespondre a votre demande :</p>
+                        <ul>
+                            @foreach (Recipe recipe in prompt.Recipes)
+                            {
+                                <li><a href="/Recipe/details?id=@recipe.Id">@recipe.Name</a></li>
+                            }
+                        </ul>
+                    }
                 </div>
             </div>
         }
