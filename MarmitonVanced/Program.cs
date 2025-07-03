@@ -42,36 +42,48 @@ app.Map("/ws", async (HttpContext context) =>
     {
         WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
         sockets.Add(webSocket);
-        Console.WriteLine("WebSocket connecté.");
+        var clientIp = context.Connection.RemoteIpAddress?.ToString();
+        Console.WriteLine($"Client connecté depuis : {clientIp}");
 
         var buffer = new byte[1024 * 4];
-
-        while (webSocket.State == WebSocketState.Open)
+        try
         {
-            var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
-            if (result.MessageType == WebSocketMessageType.Close)
+            while (webSocket.State == WebSocketState.Open)
             {
-                Console.WriteLine("Déconnexion WebSocket.");
-                await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Bye", CancellationToken.None);
-                sockets.TryTake(out _);
-                break;
-            }
+                var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
-            var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-
-            // Diffuser à tous les clients connectés
-            foreach (var socket in sockets)
-            {
-                if (socket.State == WebSocketState.Open)
+                if (result.MessageType == WebSocketMessageType.Close)
                 {
-                    await socket.SendAsync(
-                        Encoding.UTF8.GetBytes(message),
-                        WebSocketMessageType.Text,
-                        true,
-                        CancellationToken.None);
+                    Console.WriteLine("Déconnexion WebSocket.");
+                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Bye", CancellationToken.None);
+                    sockets.TryTake(out _);
+                    break;
+                }
+
+                var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                Console.WriteLine(message);
+
+                // Diffuser à tous les clients connectés
+                foreach (var socket in sockets)
+                {
+                    if (socket.State == WebSocketState.Open)
+                    {
+                        await socket.SendAsync(
+                            Encoding.UTF8.GetBytes(message),
+                            WebSocketMessageType.Text,
+                            true,
+                            CancellationToken.None);
+                    }
                 }
             }
+        }
+        catch (WebSocketException ex)
+        {
+            Console.WriteLine($"WebSocket fermé de façon inattendue : {ex.Message}");
+        }
+        finally
+        {
+            sockets.TryTake(out _);
         }
     }
     else
