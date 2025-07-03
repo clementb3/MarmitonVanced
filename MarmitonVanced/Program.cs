@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<Dictionary<string, int>>();
 
 var app = builder.Build();
 
@@ -34,15 +35,15 @@ var webSocketOptions = new WebSocketOptions
 
 app.UseWebSockets(webSocketOptions);
 
-ConcurrentBag<WebSocket> sockets = new();
+List<List<object>> sockets = new();
 
 app.Map("/ws", async (HttpContext context) =>
 {
     if (context.WebSockets.IsWebSocketRequest)
     {
         WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-        sockets.Add(webSocket);
-        var clientIp = context.Connection.RemoteIpAddress?.ToString();
+        string clientIp = context.Connection.RemoteIpAddress?.ToString() ?? "";
+        sockets.Add([clientIp, webSocket]);
         Console.WriteLine($"Client connecté depuis : {clientIp}");
 
         var buffer = new byte[1024 * 4];
@@ -56,7 +57,7 @@ app.Map("/ws", async (HttpContext context) =>
                 {
                     Console.WriteLine("Déconnexion WebSocket.");
                     await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Bye", CancellationToken.None);
-                    sockets.TryTake(out _);
+                    sockets.Remove(sockets.First(socket => ((WebSocket)socket[1]) == webSocket));
                     break;
                 }
 
@@ -66,9 +67,9 @@ app.Map("/ws", async (HttpContext context) =>
                 // Diffuser à tous les clients connectés
                 foreach (var socket in sockets)
                 {
-                    if (socket.State == WebSocketState.Open)
+                    if (((WebSocket)socket[1]).State == WebSocketState.Open && ((string)socket[0]) == clientIp)
                     {
-                        await socket.SendAsync(
+                        await ((WebSocket)socket[1]).SendAsync(
                             Encoding.UTF8.GetBytes(message),
                             WebSocketMessageType.Text,
                             true,
@@ -83,7 +84,7 @@ app.Map("/ws", async (HttpContext context) =>
         }
         finally
         {
-            sockets.TryTake(out _);
+            sockets.Remove(sockets.First(socket => ((WebSocket)socket[1]) == webSocket));
         }
     }
     else

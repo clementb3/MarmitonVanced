@@ -1,5 +1,11 @@
 ﻿const ws = new WebSocket("wss://" + location.host + "/ws");
 document.addEventListener("mousewheel", onScroll)
+window.onbeforeunload = function () {
+    fetch('QuitDetails?id=' + location.href.split("id=")[1])
+    ws.close(); 
+
+};
+
 ws.onmessage = function (event) {
     goElement(document.querySelectorAll(".recipe > div > p ")[event.data])
 };

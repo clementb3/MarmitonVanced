@@ -12,7 +12,7 @@
     <div class="list" id="tout">
         @foreach (Recipe recipe in Model)
         {
-            <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
+            <button id="@recipe.Id" class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
                 @if (@recipe.Image != "")
                 {
                     <img src="../images/@recipe.Image" alt="Recette" />
@@ -47,7 +47,7 @@
     <div class="list" id="entree" style="visibility:hidden">
         @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Entrée))
         {
-            <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
+            <button id="@recipe.Id" class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
                 @if (@recipe.Image != "")
                 {
                     <img src="../images/@recipe.Image" alt="Recette" />
@@ -82,7 +82,7 @@
     <div class="list" id="plat" style="visibility:hidden">
         @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Plat))
         {
-            <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
+            <button id="@recipe.Id" class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
                 @if (@recipe.Image != "")
                 {
                     <img src="../images/@recipe.Image" alt="Recette" />
@@ -117,7 +117,7 @@
     <div class="list" id="dessert" style="visibility:hidden">
         @foreach (Recipe recipe in Model.Where(recipe => recipe.Type == RecipeType.Dessert))
         {
-            <button class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
+            <button id="@recipe.Id" class="recipe frame2" onclick="location.href ='/recipe/details?id=@recipe.Id'">
                 @if (@recipe.Image!= "")
                 {
                     <img src="../images/@recipe.Image" alt="Recette" />
@@ -158,3 +158,5 @@
     if  (location.href.includes("search"))
     document.getElementById("create").style.visibility = "hidden"
 </script>
+
+<script src="~/js/Recipe.js"></script>

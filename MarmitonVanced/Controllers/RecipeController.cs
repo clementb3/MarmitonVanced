@@ -9,7 +9,7 @@ using static System.Net.WebRequestMethods;
 
 namespace MarmitonVanced.Controllers
 {
-    public class RecipeController(IConfiguration configuration) : Controller
+    public class RecipeController(IConfiguration configuration, Dictionary<string, int> recipeIp) : Controller
     {
         public IActionResult Index()
         {
@@ -176,8 +176,33 @@ namespace MarmitonVanced.Controllers
             return View("index", recipes);
         }
 
+        public void QuitDetails(int id)
+        {
+            string clientIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "";
+            if (recipeIp.TryGetValue(clientIp, out int _))
+            {
+                recipeIp.Remove(clientIp);
+            }
+        }
+
+        public int getDetails()
+        {
+            string clientIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "";
+            if (recipeIp.TryGetValue(clientIp, out int id))
+            {
+                return id;
+            }
+            return -1;
+        }
+
         public IActionResult Details(int id)
         {
+            string clientIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "";
+            if (recipeIp.TryGetValue(clientIp, out int _))
+            {
+                recipeIp.Remove(clientIp);
+            }
+            recipeIp.Add(clientIp,id);
             SqlConnection sqlConnection = new(configuration["ConnectionStrings:db"]);
             sqlConnection.Open();
             Recipe recipe = new();
