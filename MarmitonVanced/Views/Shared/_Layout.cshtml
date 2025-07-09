@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MarmitonVanced.styles.css" asp-append-version="true" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload"
+         data-client_id="790687088837-7obcub3b4bm7q6m5tuqcmhklv96t80rr.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
     <script>const urlBase = ""</script>
 </head>
 <body>
@@ -58,7 +64,14 @@
             <input type="text" placeholder="E-mail" />
             <input type="password" placeholder="Password" />
             <div>
-                <input onclick='document.getElementById("login").style.visibility = "hidden"' type="button" value="Annuler" />
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>                <input onclick='document.getElementById("login").style.visibility = "hidden"' type="button" value="Annuler" />
                 <input onclick="connectAccount()" type="submit" value="Valider" />
                 <input onclick="createAccountShow()" type="button" value="Créer un nouveau compte" />
             </div>
@@ -66,7 +79,7 @@
     </div>
     <div id="logout" class="popup">
         <div class="frame1">
-            <p></p>
+            <p id="accountName"></p>
             <div>
                 <input onclick='document.getElementById("logout").style.visibility = "hidden"' type="button" value="Annuler" />
                 <input onclick='deco()' type="submit" value="Déconnexion" />

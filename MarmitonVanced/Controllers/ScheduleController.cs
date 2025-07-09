@@ -85,9 +85,9 @@ namespace MarmitonVanced.Controllers
             foreach (JObject schedule in scheduleObject.Cast<JObject>())
             {
                 DateTime date = DateTime.Parse(schedule.ToString().Split("\"")[1].Split("h")[0] + " " + schedule.ToString().Split("h")[1].Split("\"")[0] + ":00:00");
-                List<int> entries = [.. schedule.ToString().Split("[")[2].Split("]")[0].Replace("\"", "").Replace("\r", "").Replace("\n", "").Replace(" ", "").Split(",").Where(number => !number.IsNullOrEmpty()).Select(number => int.Parse(number)).Distinct()];
-                List<int> plats = [.. schedule.ToString().Split("[")[3].Split("]")[0].Replace("\"", "").Replace("\r", "").Replace("\n", "").Replace(" ", "").Split(",").Where(number => !number.IsNullOrEmpty()).Select(number => int.Parse(number)).Distinct()];
-                List<int> desserts = [.. schedule.ToString().Split("[")[4].Split("]")[0].Replace("\"", "").Replace("\r", "").Replace("\n", "").Replace(" ", "").Split(",").Where(number => !number.IsNullOrEmpty()).Select(number => int.Parse(number)).Distinct()];
+                List<int> entries = [.. schedule.ToString().Split("[")[2].Split("]")[0].Replace("\"", "").Replace("\r", "").Replace("\n", "").Replace(" ", "").Split(",").Where(number => !String.IsNullOrEmpty(number)).Select(number => int.Parse(number)).Distinct()];
+                List<int> plats = [.. schedule.ToString().Split("[")[3].Split("]")[0].Replace("\"", "").Replace("\r", "").Replace("\n", "").Replace(" ", "").Split(",").Where(number => !String.IsNullOrEmpty(number)).Select(number => int.Parse(number)).Distinct()];
+                List<int> desserts = [.. schedule.ToString().Split("[")[4].Split("]")[0].Replace("\"", "").Replace("\r", "").Replace("\n", "").Replace(" ", "").Split(",").Where(number => !String.IsNullOrEmpty(number)).Select(number => int.Parse(number)).Distinct()];
                 foreach (int idRecipe in entries.Concat(plats).Concat(desserts))
                 {
                     commande += $"({idRecipe},{id},'{date}'),";
